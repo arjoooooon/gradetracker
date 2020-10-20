@@ -1,0 +1,46 @@
+.container {
+    background-color: white;
+    color: black;
+    padding: 0;
+    margin: 0;
+    font-family: monospace;
+}
+
+.cardList{
+    display: flex;
+    flex-direction: row;
+    padding: 3rem;
+    overflow-x: hidden;
+}
+
+.card{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 200px;
+    width: 220px;
+    min-width: 50px;
+    padding: 1.5rem;
+    
+    border-radius: 16px;
+    background-color:white;
+    box-shadow: -1rem 0 3rem -40px black;
+
+    transition: .2s;
+}
+
+.cardTitle{
+    font-size: 1.1em;
+}
+
+.card:hover{
+    transform: translateY(-1rem);
+    cursor: pointer;
+}
+
+.card:hover~.card{
+    transform: translateX(130px);
+}
+.card:not(:first-child){
+    margin-left: -130px;
+}

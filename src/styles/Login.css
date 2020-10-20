@@ -9,12 +9,18 @@ input{
     flex: 1;
     justify-content: center;
     align-items: center;
+    background-color: rgba(47, 45, 103, 1);
 }
 
 .login-window{
     padding: 7% 7%;
     border: solid 1px rgba(47, 45, 103, 1);
     border-radius: 40px;
+    background-color: white;
+}
+
+.login-header{
+    font-family: 'Chilanka', cursive;
 }
 
 .login-label{
@@ -50,4 +56,17 @@ input{
     border: none;
     outline: none;
     cursor: pointer;
+}
+
+.login-redirect-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2em;
+}
+
+.login-redirect{
+    text-decoration: underline;
+    font-size: 0.8em;
+    color: grey;
 }

@@ -1,0 +1,45 @@
+.subjectForm {
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+    margin: 20px;
+}
+
+.subjectSelector {
+    border-radius: 16px;
+    height: 30px;
+    padding-left: 10px;
+    margin-bottom: 20px;
+}
+
+.formWrapper {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    justify-content: center;
+    margin-top: 4vh;
+}
+
+.formHeader{
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.formInput {
+    margin-bottom: 20px;
+    height: 30px;
+    border-radius: 16px;
+    padding-left: 10px;
+    border-width: 1px;
+}
+
+.percentageInput {
+    margin-bottom: 10px;
+    height: 30px;
+    text-align: right;
+    width: 30px;
+}
+
+.boundaryInputContainer {
+    margin-top: 5px;
+}

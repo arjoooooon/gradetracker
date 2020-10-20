@@ -1,0 +1,18 @@
+.visualWrapper {
+    margin: 0 5vw;
+    border-radius: 20px;
+    box-shadow: 1px 0 3rem -2rem black;
+    padding: 3em;
+}
+
+.visualTitle {
+    margin: 0;
+    margin-bottom: 10px
+}
+
+.visualSubtitle {
+    margin: 0;
+    font-style: italic;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
