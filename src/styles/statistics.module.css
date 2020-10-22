@@ -1,8 +1,10 @@
 .visualWrapper {
-    margin: 0 5vw;
+    margin: 0 5vw 2vh 5vw;
     border-radius: 20px;
     box-shadow: 1px 0 3rem -2rem black;
     padding: 3em;
+    display: flex;
+    flex-direction: row;
 }
 
 .visualTitle {
@@ -15,4 +17,54 @@
     font-style: italic;
     font-weight: 500;
     margin-bottom: 30px;
+}
+
+.visualInfo {
+    margin-right: 30px;
+}
+
+.assignmentWrapper {
+    margin-top: 12vh;
+}
+
+.assignmentTitle{
+    margin: 0;
+    margin-bottom: 1px;
+}
+
+.underline {
+    content: '';
+    height: 1px;
+    width: 400px;
+    background-color: black;
+}
+
+.assignmentSubtitle {
+    font-size: 1.4em;
+    padding:1.2em;
+    border: 1px solid lightgray;
+    background-color: lightgray;
+    font-weight: 400;
+    border-radius: 16px
+    
+}
+
+.scoreContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.score {
+    margin: 5vh;
+}
+
+.scorePreface {
+    font-size: 2em;
+    color: black;
+}
+
+.scoreValue {
+    margin-left: 5vw;
+    font-size: 3em;
+    color: rgb(47, 45, 103);
 }

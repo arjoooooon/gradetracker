@@ -24,6 +24,11 @@ const AddAssignmentComponent = props => {
         event.preventDefault();
     }
 
+    const percentageInputValidation = event => {
+        const input = event.target.value;
+        console.log(percentage);
+    }
+
     const gradeList = ['None', '1', '1+', '2-', '2', '2+', '3-', '3', '3+', '4-', '4', '4+', '5-', '5', '5+', '6-', '6', '6+', '7-', '7', '7+'];
 
     return (
@@ -34,7 +39,7 @@ const AddAssignmentComponent = props => {
             <div style={{display: 'flex', flexDirection: 'column'}}>
                 <span style={{marginBottom: 5}}>Percentage</span>
                 <span>
-                    <input className={styles.percentageInput} placeholder="78" onChange={changePercentage} />
+                    <input className={styles.percentageInput} placeholder="78" onChange={changePercentage} onKeyPress={percentageInputValidation}/>
                     <span>  %</span>
                 </span>
 

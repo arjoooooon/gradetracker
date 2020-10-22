@@ -1,11 +1,12 @@
 import React from 'react';
-import Home from './Components/Home';
+import Dashboard from './Components/Dashboard';
 import Login from './Components/Login';
 import Account from './Components/Account'
 import Subjects from './Components/EditSubjects';
 import Statistics from './Components/Statistics';
 import UserProvider, { UserContext } from './Providers/UserProvider';
 import SignUp from './Components/SignUp';
+import './styles/index.css'
 
 import {
     BrowserRouter as Router,
@@ -26,7 +27,7 @@ function App(){
                     </Route>
 
                     <Route exact path="/dashboard">
-                        <Home />
+                        <Dashboard />
                     </Route>
 
                     <Route exact path="/account">

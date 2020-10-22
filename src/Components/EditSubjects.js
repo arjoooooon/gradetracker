@@ -25,10 +25,14 @@ const EditAssignmentComponent = props => {
             .then(doc => {
                 var data = doc.data();
                 setPercentage(parseInt(data.percentage))
+                setPreviousPercentage(parseInt(data.percentage))
                 var grade_t = (data.grade)? data.grade : 'None'
-                setGrade(grade_t)
+                setPreviousGrade(grade_t);
+                setGrade(grade_t);
+                setPreviousAssignmentName(doc.id);
+                setAssignmentName(doc.id);
             })
-    }, [props.user])
+    }, [props.user, props.assignmentName])
 
     const changeAssignmentName = event => {
         setAssignmentName(event.target.value);
@@ -60,7 +64,7 @@ const EditAssignmentComponent = props => {
             <div style={{display: 'flex', flexDirection: 'column'}}>
                 <span style={{marginBottom: 5}}>Percentage</span>
                 <span>
-                    <input className={styles.percentageInput} value={percentage} onChange={changePercentage} />
+                    <input className={styles.percentageInput} value={(percentage)? percentage : ''} onChange={changePercentage} />
                     <span>  %</span>
                 </span>
 
@@ -111,7 +115,47 @@ const EditSubjectComponent = props => {
                         }
                     }
 
-                    percentage = final
+                    percentage = final;
+                })
+        } else {
+            await db.collection('users').doc(props.user.uid).collection(props.subjectName).doc('information').get()
+                .then(doc => {
+                    let threshold = null;
+                    let boundaries = doc.data().boundaries;
+                    
+                    for(let i = 1; i < 8; i++){
+                        if(percentage < parseInt(boundaries[map[i]])){
+                            threshold = i-1;
+                            break;
+                        }
+                    }
+
+                    let final = ''
+                    if(threshold === null){
+                        final = '7';
+                        let lowerBound = parseInt(boundaries['seven']);
+                        let difference = 100 - parseInt(boundaries['seven']);
+                        
+                        if(percentage > lowerBound + 2*difference/3){
+                            final += '+'
+                        } else if(percentage < lowerBound + difference/3){
+                            final += '-'
+                        }
+                    } else {
+                        final = threshold.toString(10);
+                        console.log(final);
+                        let lowerBound = parseInt(boundaries[map[threshold]]);
+                        let difference = parseInt(boundaries[map[threshold+1]]) - parseInt(boundaries[map[threshold]]);
+
+                        if(percentage > lowerBound + 2*difference/3) {
+                            final += '+';
+                        } else if(percentage < lowerBound + difference/3) {
+                            final += '-';
+                        }
+                    }
+
+                    grade = final;
+                    console.log(final);
                 })
         }
 
@@ -161,7 +205,7 @@ const EditSubjectComponent = props => {
 
         const map = [null, 'one', 'two', 'three', 'four', 'five', 'six', 'seven'];
 
-        if(percentage === null){
+        if(percentage === null || (previousGrade !== grade && previousPercentage === percentage)){
              await db.collection('users').doc(props.user.uid).collection(props.subjectName).doc('information').get()
                 .then(doc => {
                     var boundaries = doc.data().boundaries;
@@ -183,6 +227,46 @@ const EditSubjectComponent = props => {
                     }
 
                     percentage = final
+                })
+        }
+
+        if (grade === null ||  previousPercentage !== percentage){
+            await db.collection('users').doc(props.user.uid).collection(props.subjectName).doc('information').get()
+                .then(doc => {
+                    let threshold = null;
+                    let boundaries = doc.data().boundaries;
+                    
+                    for(let i = 1; i < 8; i++){
+                        if(percentage < parseInt(boundaries[map[i]])){
+                            threshold = i-1;
+                            break;
+                        }
+                    }
+
+                    let final = ''
+                    if(threshold === null){
+                        final = '7';
+                        let lowerBound = parseInt(boundaries['seven']);
+                        let difference = 100 - parseInt(boundaries['seven']);
+                        
+                        if(percentage > lowerBound + 2*difference/3){
+                            final += '+'
+                        } else if(percentage < lowerBound + difference/3){
+                            final += '-'
+                        }
+                    } else {
+                        final = threshold.toString(10);
+                        let lowerBound = parseInt(boundaries[map[threshold]]);
+                        let difference = parseInt(boundaries[map[threshold+1]]) - parseInt(boundaries[map[threshold]]);
+
+                        if(percentage > lowerBound + 2*difference/3) {
+                            final += '+';
+                        } else if(percentage < lowerBound + difference/3) {
+                            final += '-';
+                        }
+                    }
+
+                    grade = final;
                 })
         }
 

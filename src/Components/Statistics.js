@@ -10,11 +10,16 @@ import { BarChart, ComposedChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, 
 const Visualize = props => {
     const [data, setData] = useState([])
     const [averagePercentage, setAveragePercentage] = useState(null)
+    const [selectedAssignment, setSelectedAssignment] = useState({name: '', score: 0, grade: ''});
+    const [assignmentActivated, setAssignmentActivated] = useState(false)
+
+    const assignmentSelectionHandler = (data, index) => {
+        setSelectedAssignment(data);
+        setAssignmentActivated(true);
+    }
     
     useEffect(() => {
         let temp = []
-        let documentCounter = 0;
-        let percentageAccumulator = 0;
 
         setData([])
         setAveragePercentage(null)
@@ -25,20 +30,41 @@ const Visualize = props => {
                     querySnapshot.forEach(doc => {
                         if(doc.id !== 'information'){
                             let data = doc.data();
-                            temp.push({name : doc.id, percentage: parseInt(data.percentage), grade: doc.grade})
-                            documentCounter++;
-                            percentageAccumulator += parseInt(data.percentage);
+                            temp.push({name : doc.id, score: parseInt(data.percentage), grade: data.grade})
+                        } else {
+                            let data = doc.data();
+                            setAveragePercentage(data.average);
                         }
                     })
                 })
 
             setData(temp);
-            setAveragePercentage((percentageAccumulator/documentCounter).toFixed(1));
         }
 
         processData();
 
     }, [props.user, props.subjectName])
+
+    useEffect(() => {
+        setAssignmentActivated(false)
+    }, [props.subjectName])
+
+    const assignmentInformation = (
+        <div className={styles.assignmentWrapper}>
+            <h1 className={styles.assignmentTitle}>{selectedAssignment.name}</h1>
+            <div className={styles.underline}></div>
+            <div className={styles.scoreContainer}>
+                <span className={styles.score}>
+                    <span className={styles.scorePreface}>Score:</span>
+                    <span className={styles.scoreValue}>{selectedAssignment.score}%</span>
+                </span>
+                <span className={styles.score}>
+                    <span className={styles.scorePreface}>Grade:</span>
+                    <span className={styles.scoreValue}>{selectedAssignment.grade}</span>
+                </span>
+            </div>
+        </div>
+    );
 
     return (
         <div className={styles.visualWrapper}>
@@ -51,9 +77,12 @@ const Visualize = props => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="percentage" fill="#2F2D67" />
+                    <Bar dataKey="score" fill="#2F2D67" unit="%" onClick={assignmentSelectionHandler}/>
                     <ReferenceLine y={averagePercentage} stroke="red"/>
                 </BarChart>
+            </div>
+            <div>
+                {(assignmentActivated)? assignmentInformation : <></>}
             </div>
         </div>
     );
@@ -69,17 +98,26 @@ const Statistics = () => {
     }
 
     useEffect(() => {
-        if(user) {
-            db.collection('users').doc(user.uid).get()
-                .then(doc => {
-                    let data = doc.data()
-                    let temp = []
-                    data.subjectNames.forEach(subjectName => {
-                        temp = [...temp, {title: subjectName, hl: true}];
+        const processData = async () => {
+            db.collection('users').doc(user.uid).get().then(async doc => {
+                let temp = [];
+                let data = doc.data();
+                let subjectNames = data.subjectNames;
+
+                for(const subjectName of subjectNames){
+                    await db.collection('users').doc(user.uid).collection(subjectName).doc('information').get().then(info => {
+                        temp.push({title: subjectName, hl: true, score: parseInt(info.data().average)});
                     })
-                    setSubjectList(temp);
-                })
+                }
+
+                setSubjectList(temp);
+            })
         }
+
+        if(user){
+            processData();
+        }
+
     }, [user])
 
     return (
@@ -87,6 +125,7 @@ const Statistics = () => {
             <Header />
             {(subjectList)? <Cards renderList={subjectList} handleSelect={handleSelect} /> : <></>} 
             {(selectedSubject === 'None')? <></> : <Visualize user={user} subjectName={selectedSubject} />}
+
         </div>
     );
 }

@@ -3,7 +3,6 @@
     color: black;
     padding: 0;
     margin: 0;
-    font-family: monospace;
 }
 
 .cardList{
@@ -43,4 +42,23 @@
 }
 .card:not(:first-child){
     margin-left: -130px;
+}
+
+.radialChartContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 150px;
+}
+
+.hlIndicator {
+    font-size: 0.8em;
+    margin: 0;
+}
+
+.centerScore {
+    position: absolute;
+    left: 118px;
+    top: 134px; 
+    font-size: 1.4em;
 }
