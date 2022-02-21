@@ -1,6 +1,6 @@
 **Grade Tracker project**
 
-A rehashing of what I had set off to do for a small computer science assignment
+A little thing that I made that helps me not drop out.
 
 run `yarn start` to run the application on development server.
 
